@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.mock;
+package kr.co.rian.apmax.agent.test;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

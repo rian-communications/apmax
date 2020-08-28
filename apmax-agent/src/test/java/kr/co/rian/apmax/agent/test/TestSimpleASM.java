@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent;
+package kr.co.rian.apmax.agent.test;
 
 public class TestSimpleASM {
   

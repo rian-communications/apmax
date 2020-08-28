@@ -1,6 +1,5 @@
 package kr.co.rian.apmax.agent;
 
-import kr.co.rian.apmax.agent.mock.MockTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
@@ -24,9 +23,9 @@ public class Bootstrap {
         ClassReader reader = new ClassReader(classfileBuffer);
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         
-        MockTransformer transformer = new MockTransformer(writer);
-        
-        reader.accept(transformer, ClassReader.EXPAND_FRAMES);
+//        MockTransformer transformer = new MockTransformer(writer);
+//
+//        reader.accept(transformer, ClassReader.EXPAND_FRAMES);
         
         return writer.toByteArray();
       }
