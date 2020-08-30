@@ -5,9 +5,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class MockTransformer extends ClassVisitor implements Opcodes {
+public class TestTransformer extends ClassVisitor implements Opcodes {
   
-  public MockTransformer(ClassVisitor classVisitor) {
+  public TestTransformer(ClassVisitor classVisitor) {
     super(ASM7, classVisitor);
   }
   

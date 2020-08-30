@@ -15,7 +15,7 @@ public class ApmaxServerApplication implements CommandLineRunner {
   
   @Override
   public void run(String... args) throws IOException, InterruptedException {
-    ClientServiceCollector.start();
+    //ClientServiceCollector.start();
   }
 
 }
