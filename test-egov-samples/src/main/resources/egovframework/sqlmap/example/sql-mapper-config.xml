@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+ 	<settings>
+        <setting name="defaultStatementTimeout" value="10"/> <!-- seconds -->
+    </settings>
+    
+    <typeAliases>
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="searchVO" type="egovframework.example.sample.service.SampleDefaultVO"/>
+		<typeAlias alias="sampleVO" type="egovframework.example.sample.service.SampleVO"/>
+		<typeAlias alias="search2VO" type="egovframework.example.sample2.service.SampleDefaultVO"/>
+		<typeAlias alias="sample2VO" type="egovframework.example.sample2.service.SampleVO"/>
+		<typeAlias alias="search3VO" type="egovframework.example.sample3.service.SampleDefaultVO"/>
+		<typeAlias alias="sample3VO" type="egovframework.example.sample3.service.SampleVO"/>
+		<typeAlias alias="search4VO" type="egovframework.example.sample4.service.SampleDefaultVO"/>
+		<typeAlias alias="sample4VO" type="egovframework.example.sample4.service.SampleVO"/>
+		<typeAlias alias="search5VO" type="egovframework.example.sample5.service.SampleDefaultVO"/>
+		<typeAlias alias="sample5VO" type="egovframework.example.sample5.service.SampleVO"/>
+		<typeAlias alias="search6VO" type="egovframework.example.sample6.service.SampleDefaultVO"/>
+		<typeAlias alias="sample6VO" type="egovframework.example.sample6.service.SampleVO"/>
+		<typeAlias alias="search7VO" type="egovframework.example.sample7.service.SampleDefaultVO"/>
+		<typeAlias alias="sample7VO" type="egovframework.example.sample7.service.SampleVO"/>
+		<typeAlias alias="search8VO" type="egovframework.example.sample8.service.SampleDefaultVO"/>
+		<typeAlias alias="sample8VO" type="egovframework.example.sample8.service.SampleVO"/>
+		<typeAlias alias="search9VO" type="egovframework.example.sample9.service.SampleDefaultVO"/>
+		<typeAlias alias="sample9VO" type="egovframework.example.sample9.service.SampleVO"/>
+		<typeAlias alias="search10VO" type="egovframework.example.sample10.service.SampleDefaultVO"/>
+		<typeAlias alias="sample10VO" type="egovframework.example.sample10.service.SampleVO"/>
+    </typeAliases>
+    
+   
+    
+</configuration>
