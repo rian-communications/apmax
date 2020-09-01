@@ -1,7 +1,6 @@
 package kr.co.rian.apmax.agent.config;
 
 import kr.co.rian.apmax.agent.utility.CodeUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.Opcodes;
 
 import java.io.FileInputStream;
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-@Slf4j
 public final class Config {
   
   public static final int ASM_VERSION = Opcodes.ASM5;
@@ -26,14 +24,14 @@ public final class Config {
   private static final String DEFAULT_CONFIG_PATH = "classpath:apmax-agent-config.properties";
   
   static {
-    DEFAULT_SERVLET_CLASSES.add("javax/servlet/HttpService");
+    DEFAULT_SERVLET_CLASSES.add("javax/servlet/http/HttpServlet");
     
     DEFAULT_JDBC_CLASSES.add("javax/sql/Statement");
     DEFAULT_JDBC_CLASSES.add("javax/sql/PreparedStatement");
     DEFAULT_JDBC_CLASSES.add("javax/sql/CallableStatement");
     
     // 설정파일을 통해서 초기 설정을 구성해요.
-    loadConfigFile();
+    configure();
   }
   
   
@@ -66,7 +64,7 @@ public final class Config {
   }
   
   
-  private static void loadConfigFile() {
+  public static void configure() {
     String path = System.getProperty(APMAX_CONFIG_KEY);
     if (path == null || "".equals(path.trim())) {
       path = DEFAULT_CONFIG_PATH;
@@ -84,6 +82,8 @@ public final class Config {
         
         in = propFileUrl.openStream();
         props.load(in);
+        
+        composeTargetMethod();
       }
     }
     catch (IOException e) {
@@ -101,12 +101,20 @@ public final class Config {
     }
   }
   
+  private static void composeTargetMethod() {
+    // 설정에 등록된 추출 대상 메서드들을 초기화 해놔요.
+    final Set<String> targetMethodSignatures = CodeUtils.splitAndToSet(Config.getTargetMethodSignatures());
+    for (final String targetMethodSignature : targetMethodSignatures) {
+      new TargetMethod(targetMethodSignature);
+    }
+
+  }
   
-  @Slf4j
+  
   private static class ConfigLoadingError extends Error {
     
     public ConfigLoadingError(Exception e) {
-      logger.error(e.getMessage(), e);
+      e.printStackTrace(System.err);
     }
     
   }

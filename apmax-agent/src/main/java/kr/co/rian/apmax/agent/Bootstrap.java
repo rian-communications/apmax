@@ -1,7 +1,6 @@
 package kr.co.rian.apmax.agent;
 
 import kr.co.rian.apmax.agent.config.Config;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +8,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.instrument.Instrumentation;
 
-@Slf4j
 public class Bootstrap {
+  
+  static {
+    Config.configure();
+  }
   
   private Bootstrap() {
   }
@@ -22,16 +24,19 @@ public class Bootstrap {
    * @param instrumentation 기본 도구에요.
    */
   public static void premain(String options, Instrumentation instrumentation) {
-    intro();
+    welcome();
     
-    System.setProperty(Config.APMAX_CONFIG_KEY, options);
+    if (options != null) {
+      System.setProperty(Config.APMAX_CONFIG_KEY, options);
+    }
     
     instrumentation.addTransformer(
-        new APMAXAgentTransformer()
+        new APMAXAgentTransformer(),
+        true
     );
   }
   
-  private static void intro() {
+  private static void welcome() {
     final InputStream in = ClassLoader.getSystemResourceAsStream("apmax-agent-logo");
     
     if (in != null) {
@@ -40,7 +45,7 @@ public class Bootstrap {
       try {
         String line;
         while ((line = reader.readLine()) != null) {
-          logger.info(line);
+          System.out.println(line);
         }
       }
       catch (IOException e) {
