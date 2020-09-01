@@ -1,5 +1,6 @@
 package kr.co.rian.apmax.agent.utility;
 
+import kr.co.rian.apmax.agent.exception.FallDownException;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Method;
@@ -10,10 +11,6 @@ import java.util.Set;
 public class CodeUtils {
   
   private CodeUtils() {
-  }
-  
-  public static Set<String> splitAndToSet(final String values) {
-    return new HashSet<String>(Arrays.asList(values.split("[\\s,|]+")));
   }
   
   public static Class<?> typeToClass(Type type) throws ClassNotFoundException {
@@ -74,10 +71,8 @@ public class CodeUtils {
       return clazz.getMethod(methodName, argumentsToClasses(descriptor));
     }
     catch (Exception e) {
-      new RuntimeException(e);
+      throw new FallDownException(e);
     }
-
-    return null;
   }
   
   

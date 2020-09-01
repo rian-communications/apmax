@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.visitor;
+package kr.co.rian.apmax.agent.asm;
 
 public interface AgentLinkageVisitor {
   

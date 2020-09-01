@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.visitor;
+package kr.co.rian.apmax.agent.asm;
 
 import kr.co.rian.apmax.agent.config.Config;
 import org.objectweb.asm.ClassReader;
@@ -8,11 +8,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class SimpleTargetVisitor extends ClassVisitor implements AgentLinkageVisitor {
+public class TracerComposition extends ClassVisitor implements AgentLinkageVisitor {
   
   private final ClassWriter writer;
 
-  public SimpleTargetVisitor(byte[] classfileBuffer) {
+  public TracerComposition(byte[] classfileBuffer) {
     super(Config.ASM_VERSION);
     
     final ClassReader reader = new ClassReader(classfileBuffer);
