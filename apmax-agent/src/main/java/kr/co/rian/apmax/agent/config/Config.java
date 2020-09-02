@@ -45,7 +45,7 @@ public final class Config {
   }
   
   public static Set<String> getPackages() {
-    return splitAndToSet(props.getProperty("agent.monitored-package-prefix"));
+    return splitAndToSet(props.getProperty("agent.monitor-package-prefix"));
   }
   
   public static String getServerHost() {

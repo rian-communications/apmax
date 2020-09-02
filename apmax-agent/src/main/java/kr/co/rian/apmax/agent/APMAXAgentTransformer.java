@@ -14,7 +14,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
       return new TracerComposition(classfileBuffer).toByteArray();
     }
 
-    if (isMonitoredClass(className)) {
+    if (isMonitorTargetClass(className)) {
       return classfileBuffer;
     }
   
@@ -31,7 +31,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
     return false;
   }
   
-  private boolean isMonitoredClass(final String className) {
+  private boolean isMonitorTargetClass(final String className) {
     for (final String pkg : Config.getPackages()) {
       if (className.startsWith(pkg)) {
         return true;
