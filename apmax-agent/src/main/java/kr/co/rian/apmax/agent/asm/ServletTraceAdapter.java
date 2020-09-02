@@ -8,17 +8,16 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class TracerComposition extends ClassVisitor implements AgentLinkageVisitor {
+public class ServletTraceAdapter extends ClassVisitor implements AgentLinkageAdapter {
   
   private final ClassWriter writer;
 
-  public TracerComposition(byte[] classfileBuffer) {
+  public ServletTraceAdapter(byte[] classfileBuffer) {
     super(Config.ASM_VERSION);
     
     final ClassReader reader = new ClassReader(classfileBuffer);
-    reader.accept(this, ClassReader.EXPAND_FRAMES);
-
     writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+    reader.accept(this, ClassReader.EXPAND_FRAMES);
   }
   
   @Override
@@ -28,7 +27,7 @@ public class TracerComposition extends ClassVisitor implements AgentLinkageVisit
   
   @Override
   public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-    super.visit(version, access, name, signature, superName, interfaces);
+    writer.visit(version, access, name, signature, superName, interfaces);
     
     System.out.println("hi, visit in class!");
   }

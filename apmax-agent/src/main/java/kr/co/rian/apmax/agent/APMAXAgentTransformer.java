@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent;
 
 import kr.co.rian.apmax.agent.config.Config;
-import kr.co.rian.apmax.agent.asm.TracerComposition;
+import kr.co.rian.apmax.agent.asm.ServletTraceAdapter;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
@@ -11,7 +11,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
   @Override
   public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
     if (isServletClass(className)) {
-      return new TracerComposition(classfileBuffer).toByteArray();
+      return new ServletTraceAdapter(classfileBuffer).toByteArray();
     }
 
     if (isMonitorTargetClass(className)) {

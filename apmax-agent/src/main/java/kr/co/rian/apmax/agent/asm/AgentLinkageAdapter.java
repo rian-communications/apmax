@@ -1,6 +1,6 @@
 package kr.co.rian.apmax.agent.asm;
 
-public interface AgentLinkageVisitor {
+public interface AgentLinkageAdapter {
   
   byte[] toByteArray();
   
