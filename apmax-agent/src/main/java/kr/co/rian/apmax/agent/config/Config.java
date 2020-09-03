@@ -16,7 +16,7 @@ import java.util.Set;
 
 public final class Config {
   
-  public static final int ASM_VERSION = Opcodes.ASM5;
+  public static final int ASM_VERSION = Opcodes.ASM7;
   public static final String APMAX_CONFIG_KEY = "apmax.agent.config";
   
   public static final Set<String> DEFAULT_JDBC_CLASSES = new HashSet<String>();
