@@ -1,18 +1,19 @@
 package kr.co.rian.apmax.agent;
 
+
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class BootstrapConfigTest {
 
   @Test
-  public void shouldGetPropertiesInClassPath() {
+  void shouldGetPropertiesInClassPath() {
     final URL url = ClassLoader.getSystemResource("apmax-agent-config.properties");
-    
-    assert new File(url.getFile()).exists();
-  
+    assertTrue(new File(url.getFile()).exists());
   }
   
 }

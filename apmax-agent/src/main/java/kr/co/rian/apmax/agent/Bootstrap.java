@@ -12,6 +12,8 @@ public class Bootstrap {
   
   static {
     Config.configure();
+    
+    
   }
   
   private Bootstrap() {
@@ -34,6 +36,12 @@ public class Bootstrap {
         new APMAXAgentTransformer(),
         true
     );
+  }
+
+  public static void agentmain(String options, Instrumentation instrumentation) {
+    System.err.printf("Called agentmain(\"%s\" :options, \"%s\" :instrumentation)",
+        options,
+        instrumentation.toString());
   }
   
   private static void welcome() {

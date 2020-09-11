@@ -8,7 +8,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 public class TestTransformer extends ClassVisitor implements Opcodes {
   
   public TestTransformer(ClassVisitor classVisitor) {
-    super(ASM7, classVisitor);
+    super(ASM5, classVisitor);
   }
   
   @Override
@@ -34,7 +34,7 @@ public class TestTransformer extends ClassVisitor implements Opcodes {
   public static class Transformer extends LocalVariablesSorter implements Opcodes {
     
     public Transformer(int access, MethodVisitor methodVisitor, String descriptor) {
-      super(ASM7, access, descriptor, methodVisitor);
+      super(ASM5, access, descriptor, methodVisitor);
     }
     
     @Override
