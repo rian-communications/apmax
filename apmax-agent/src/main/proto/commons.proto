@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package kr.co.rian.apmax.agent;
+
+message Noop {
+}

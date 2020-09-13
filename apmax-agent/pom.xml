@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>apmax-project</artifactId>
     <groupId>kr.co.rian.apmax</groupId>
+    <artifactId>apmax</artifactId>
     <version>0.1.0</version>
   </parent>
 
@@ -14,82 +14,12 @@
   <packaging>jar</packaging>
 
   <properties>
-    <asm.version>5.0</asm.version>
-    <grpc.version>1.31.1</grpc.version>
+    <java.sdk.version>1.6</java.sdk.version>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.oshi</groupId>
-      <artifactId>oshi-core</artifactId>
-      <version>3.4.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>${asm.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-commons</artifactId>
-      <version>${asm.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.grpc</groupId>
-      <artifactId>grpc-protobuf</artifactId>
-      <version>${grpc.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.grpc</groupId>
-      <artifactId>grpc-stub</artifactId>
-      <version>${grpc.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.grpc</groupId>
-      <artifactId>grpc-netty-shaded</artifactId>
-      <version>${grpc.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.12</version>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.3</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.26</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>5.6.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>2.23.4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <dependencies/>
 
   <build>
     <extensions>
@@ -122,6 +52,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
+          <finalName>${project.artifactId}-origin-${project.version}.jar</finalName>
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
           </archive>
@@ -133,6 +64,48 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <outputFile>${project.build.directory}/${project.artifactId}-${project.version}.jar</outputFile>
+          <minimizeJar>true</minimizeJar>
+          <!--<artifactSet>
+            <includes>
+              <include>commons-httpclient:commons-httpclient</include>
+              <include>commons-logging:commons-logging</include>
+              <include>commons-lang:commons-lang</include>
+            </includes>
+          </artifactSet>-->
+          <relocations>
+            <relocation>
+              <pattern>io.grpc</pattern>
+              <shadedPattern>kr.co.rian.shaded.grpc</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.google</pattern>
+              <shadedPattern>kr.co.rian.shaded.google</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>org.objectweb.asm</pattern>
+              <shadedPattern>kr.co.rian.shaded.asm</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>oshi</pattern>
+              <shadedPattern>kr.co.rian.shaded.oshi</shadedPattern>
+            </relocation>
+          </relocations>
         </configuration>
       </plugin>
     </plugins>
