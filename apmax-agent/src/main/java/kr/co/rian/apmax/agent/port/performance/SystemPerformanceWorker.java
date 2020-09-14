@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import kr.co.rian.apmax.agent.Commons;
+import kr.co.rian.apmax.agent.Commons.Noop;
 import kr.co.rian.apmax.agent.config.Config;
 import kr.co.rian.apmax.agent.performance.SystemPerformance;
 import kr.co.rian.apmax.agent.performance.SystemPerformance.Disk;
@@ -38,7 +39,7 @@ public class SystemPerformanceWorker implements Runnable {
       final long[] memory = SystemPerformanceService.getMemory();
       final long[] network = SystemPerformanceService.getNetwork();
       
-      final ListenableFuture<Commons.Noop> collect = stub.collect(
+      final ListenableFuture<Noop> collect = stub.collect(
           SystemPerformance.newBuilder()
               .setId(Config.getId())
               .setTimestamp(System.currentTimeMillis())

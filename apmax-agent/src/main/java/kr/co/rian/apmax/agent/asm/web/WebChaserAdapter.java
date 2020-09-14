@@ -1,5 +1,6 @@
-package kr.co.rian.apmax.agent.asm;
+package kr.co.rian.apmax.agent.asm.web;
 
+import kr.co.rian.apmax.agent.asm.AgentLinkageAdapter;
 import kr.co.rian.apmax.agent.config.Config;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
@@ -32,22 +33,23 @@ public class WebChaserAdapter extends ClassVisitor implements AgentLinkageAdapte
   public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
     System.out.printf("visit(%d, %d, %s, %s, %s, %s)^\n", version, access, name, signature, superName, Arrays.toString(interfaces));
     super.visit(version, access, name, signature, superName, interfaces);
-    
     System.out.printf("visit(%d, %d, %s, %s, %s, %s)$\n", version, access, name, signature, superName, Arrays.toString(interfaces));
   }
   
   @Override
   public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-    System.out.printf("hi, visitMethod(%d, %s, %s, %s)!\n", access, name, descriptor, signature);
-    
     final MethodVisitor visitor = super.visitMethod(access, name, descriptor, signature, exceptions);
     if (visitor == null) {
       return null;
     }
     
-    System.out.println("called super.visitMethod(...)");
+    if ("service".equals(name) &&
+        "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V"
+            .equals(descriptor)) {
+      return new ServletServiceMethodVisitor(visitor, access, descriptor);
+    }
     
-    return visitor;//new SimpleTargetMethodVisitor(access, descriptor, visitor);
+    return visitor;
   }
   
   
@@ -72,7 +74,6 @@ public class WebChaserAdapter extends ClassVisitor implements AgentLinkageAdapte
       super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
       System.out.printf("hi, visitMethodInsn(%d, %s, %s, %s, %s)$\n", opcode, owner, name, descriptor);
     }
-    
     
     
     @Override

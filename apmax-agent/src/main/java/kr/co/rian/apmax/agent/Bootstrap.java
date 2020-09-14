@@ -63,7 +63,9 @@ public class Bootstrap {
   }
   
   private static void bootSystemPerformance() {
-    final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    final ExecutorService executorService =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
     executorService.execute(new SystemPerformanceWorker());
   }
   

@@ -1,6 +1,6 @@
 package kr.co.rian.apmax.agent;
 
-import kr.co.rian.apmax.agent.asm.WebChaserAdapter;
+import kr.co.rian.apmax.agent.asm.web.WebChaserAdapter;
 import kr.co.rian.apmax.agent.config.Config;
 
 import java.lang.instrument.ClassFileTransformer;

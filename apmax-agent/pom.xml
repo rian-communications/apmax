@@ -81,13 +81,14 @@
         <configuration>
           <outputFile>${project.build.directory}/${project.artifactId}-${project.version}.jar</outputFile>
           <minimizeJar>true</minimizeJar>
-          <!--<artifactSet>
+          <artifactSet>
             <includes>
-              <include>commons-httpclient:commons-httpclient</include>
-              <include>commons-logging:commons-logging</include>
-              <include>commons-lang:commons-lang</include>
+              <include>com.github.oshi:oshi-core-shaded</include>
             </includes>
-          </artifactSet>-->
+            <excludes>
+              <exclude>org.projectlombok:lombok</exclude>
+            </excludes>
+          </artifactSet>
           <relocations>
             <relocation>
               <pattern>io.grpc</pattern>
