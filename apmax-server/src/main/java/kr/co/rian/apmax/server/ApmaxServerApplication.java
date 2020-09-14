@@ -4,7 +4,8 @@ import io.grpc.Attributes;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerTransportFilter;
-import kr.co.rian.apmax.server.performance.SystemPerformanceServiceImpl;
+import kr.co.rian.apmax.server.port.chaser.ChaserServiceImpl;
+import kr.co.rian.apmax.server.port.performance.SystemPerformanceServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,7 @@ public class ApmaxServerApplication implements CommandLineRunner {
     final Server grpcServer = ServerBuilder
         .forPort(GRPC_DEFAULT_PORT)
         .addService(new SystemPerformanceServiceImpl())
+        .addService(new ChaserServiceImpl())
         .addTransportFilter(new ServerTransportFilter() {
           @Override
           public Attributes transportReady(Attributes transportAttrs) {

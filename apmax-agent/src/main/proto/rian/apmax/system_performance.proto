@@ -1,10 +1,11 @@
 syntax = "proto3";
 option java_multiple_files = true;
+option java_package = "kr.co.rian.apmax.agent.performance";
 
 
-package kr.co.rian.apmax.agent.system;
+package rian.apmax;
 
-import public "commons.proto";
+import public "rian/apmax/commons.proto";
 
 service SystemPerformanceService {
   rpc collect(SystemPerformance) returns (Noop);
@@ -12,7 +13,7 @@ service SystemPerformanceService {
 
 message SystemPerformance {
   string id = 1;
-  int32 timestamp = 2;
+  int64 timestamp = 2;
   double cpu = 3;
   Disk disk = 4;
   Memory memory = 5;

@@ -1,0 +1,7 @@
+syntax = "proto3";
+option java_package = "kr.co.rian.apmax.agent";
+
+package rian.apmax;
+
+message Noop {
+}
