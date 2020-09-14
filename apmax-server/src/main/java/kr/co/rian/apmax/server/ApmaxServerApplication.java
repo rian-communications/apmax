@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @Slf4j
@@ -23,21 +24,9 @@ public class ApmaxServerApplication implements CommandLineRunner {
   public void run(String... args) throws IOException, InterruptedException {
     final Server grpcServer = ServerBuilder
         .forPort(GRPC_DEFAULT_PORT)
+        .executor(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))
         .addService(new SystemPerformanceServiceImpl())
         .addService(new ChaserServiceImpl())
-        .addTransportFilter(new ServerTransportFilter() {
-          @Override
-          public Attributes transportReady(Attributes transportAttrs) {
-            logger.info("transportReady(Attributes) : {}", transportAttrs.toString());
-            return super.transportReady(transportAttrs);
-          }
-  
-          @Override
-          public void transportTerminated(Attributes transportAttrs) {
-            logger.info("transportTerminated(Attributes) : {}", transportAttrs.toString());
-            super.transportTerminated(transportAttrs);
-          }
-        })
         .build();
     
     grpcServer.start();

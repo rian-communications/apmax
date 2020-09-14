@@ -1,21 +1,23 @@
 package kr.co.rian.apmax.agent;
 
 import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.port.performance.SystemPerformanceWorker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.instrument.Instrumentation;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Bootstrap {
   
   static {
+    welcome();
     Config.configure();
-    
-    
   }
-  
+
   private Bootstrap() {
   }
   
@@ -26,14 +28,16 @@ public class Bootstrap {
    * @param instrumentation 기본 도구에요.
    */
   public static void premain(String agentName, Instrumentation instrumentation) {
-    welcome();
+    Config.setName(agentName);
+
+    bootSystemPerformance();
 
     instrumentation.addTransformer(
         new APMAXAgentTransformer(),
         true
     );
   }
-
+  
   public static void agentmain(String options, Instrumentation instrumentation) {
     System.err.printf("Called agentmain(\"%s\" :options, \"%s\" :instrumentation)",
         options,
@@ -56,6 +60,11 @@ public class Bootstrap {
         // no work
       }
     }
+  }
+  
+  private static void bootSystemPerformance() {
+    final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    executorService.execute(new SystemPerformanceWorker());
   }
   
 }

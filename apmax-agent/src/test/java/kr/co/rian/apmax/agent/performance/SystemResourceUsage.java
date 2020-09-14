@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.system;
+package kr.co.rian.apmax.agent.performance;
 
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;

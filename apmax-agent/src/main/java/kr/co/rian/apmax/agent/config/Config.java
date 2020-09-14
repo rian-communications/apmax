@@ -1,10 +1,8 @@
 package kr.co.rian.apmax.agent.config;
 
 import kr.co.rian.apmax.agent.exception.FallDownException;
-
 import org.objectweb.asm.Opcodes;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -18,8 +16,6 @@ import java.util.Set;
 public final class Config {
   
   public static final int ASM_VERSION = Opcodes.ASM7;
-  public static final String APMAX_CONFIG_KEY = "apmax.agent.config";
-  
   public static final Set<String> DEFAULT_JDBC_CLASSES = new HashSet<String>();
   public static final Set<String> DEFAULT_SERVLET_CLASSES = new HashSet<String>();
   
@@ -44,6 +40,12 @@ public final class Config {
   public static String getId() {
     return props.getProperty("agent.id");
   }
+
+  public static void setName(String name) {
+    if (name != null && !name.trim().equals("")) {
+      props.setProperty("agent.id", name.trim());
+    }
+  }
   
   public static Set<String> getPackages() {
     return splitAndToSet(props.getProperty("agent.monitor-package-prefix"));
@@ -57,13 +59,16 @@ public final class Config {
     return Integer.parseInt(props.getProperty("server.port", "3506"));
   }
   
+  public static boolean isDebugMode() {
+    return Boolean.parseBoolean(props.getProperty("agent.debug", "false"));
+  }
   
   public static void configure() {
     InputStream in = null;
     
     try {
       final URL propFileUrl = ClassLoader.getSystemResource("apmax-agent-config.properties");
-  
+      
       in = propFileUrl.openStream();
       props.load(in);
     }
@@ -80,7 +85,7 @@ public final class Config {
         }
       }
     }
-
+    
     if (getId() == null || "".equals(getId())) {
       try {
         props.setProperty("agent.id", InetAddress.getLocalHost().getHostName());
