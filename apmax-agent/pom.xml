@@ -52,7 +52,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <finalName>${project.artifactId}-origin-${project.version}.jar</finalName>
+          <finalName>${project.artifactId}-origin-${project.version}</finalName>
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
           </archive>
