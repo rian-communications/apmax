@@ -1,6 +1,6 @@
 package kr.co.rian.apmax.agent;
 
-import kr.co.rian.apmax.agent.asm.ServletTraceAdapter;
+import kr.co.rian.apmax.agent.asm.WebChaserAdapter;
 import kr.co.rian.apmax.agent.config.Config;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -11,7 +11,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
   @Override
   public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
     if (isServletClass(className)) {
-      return new ServletTraceAdapter(classfileBuffer).toByteArray();
+      return new WebChaserAdapter(classfileBuffer).toByteArray();
     }
     
     if (isMonitorTargetClass(className)) {

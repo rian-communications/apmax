@@ -11,11 +11,11 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import java.util.Arrays;
 
-public class ServletTraceAdapter extends ClassVisitor implements AgentLinkageAdapter {
+public class WebChaserAdapter extends ClassVisitor implements AgentLinkageAdapter {
   
   private final ClassWriter writer;
   
-  public ServletTraceAdapter(byte[] classfileBuffer) {
+  public WebChaserAdapter(byte[] classfileBuffer) {
     super(Config.ASM_VERSION);
     
     final ClassReader reader = new ClassReader(classfileBuffer);
