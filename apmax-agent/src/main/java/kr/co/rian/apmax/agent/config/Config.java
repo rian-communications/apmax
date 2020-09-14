@@ -41,8 +41,8 @@ public final class Config {
   }
   
   
-  public static String getName() {
-    return props.getProperty("agent.name");
+  public static String getId() {
+    return props.getProperty("agent.id");
   }
   
   public static Set<String> getPackages() {
@@ -59,24 +59,13 @@ public final class Config {
   
   
   public static void configure() {
-    String path = System.getProperty(APMAX_CONFIG_KEY);
-    if (path == null || "".equals(path.trim())) {
-      path = "classpath:apmax-agent-config.properties";
-    }
-    
     InputStream in = null;
     
     try {
-      if (!path.startsWith("classpath:")) {
-        in = new FileInputStream(path);
-      }
-      else {
-        final String propFileName = path.substring(10); // remove "classpath:"
-        final URL propFileUrl = ClassLoader.getSystemResource(propFileName);
-        
-        in = propFileUrl.openStream();
-        props.load(in);
-      }
+      final URL propFileUrl = ClassLoader.getSystemResource("apmax-agent-config.properties");
+  
+      in = propFileUrl.openStream();
+      props.load(in);
     }
     catch (IOException e) {
       throw new FallDownException(e);
@@ -91,11 +80,10 @@ public final class Config {
         }
       }
     }
-    
-    //
-    if (getName() == null || "".equals(getName())) {
+
+    if (getId() == null || "".equals(getId())) {
       try {
-        props.setProperty("agent.name", InetAddress.getLocalHost().getHostName());
+        props.setProperty("agent.id", InetAddress.getLocalHost().getHostName());
       }
       catch (UnknownHostException e) {
         throw new FallDownException(e);

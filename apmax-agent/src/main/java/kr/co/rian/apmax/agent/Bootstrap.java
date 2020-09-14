@@ -22,16 +22,12 @@ public class Bootstrap {
   /**
    * JVMTI(JVM Tool Interface)로 APMAX Agent를 시작해요.
    *
-   * @param options         -javaagent:jarpath=options 의 options 값으로 설정파일을 경로로 이용해요.
+   * @param agentName       VM Options 를 설정할 때, "-javaagent:jarpath=agentName" 이렇게 사용해요.
    * @param instrumentation 기본 도구에요.
    */
-  public static void premain(String options, Instrumentation instrumentation) {
+  public static void premain(String agentName, Instrumentation instrumentation) {
     welcome();
-    
-    if (options != null) {
-      System.setProperty(Config.APMAX_CONFIG_KEY, options);
-    }
-    
+
     instrumentation.addTransformer(
         new APMAXAgentTransformer(),
         true
