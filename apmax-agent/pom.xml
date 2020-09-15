@@ -80,31 +80,46 @@
         </executions>
         <configuration>
           <outputFile>${project.build.directory}/${project.artifactId}-${project.version}.jar</outputFile>
-          <minimizeJar>true</minimizeJar>
-          <artifactSet>
-            <includes>
-              <include>com.github.oshi:oshi-core-shaded</include>
-            </includes>
-            <excludes>
-              <exclude>org.projectlombok:lombok</exclude>
-            </excludes>
-          </artifactSet>
+          <filters>
+            <filter>
+              <artifact>kr.co.rian.apmax:*</artifact>
+              <excludes>
+                <exclude>rian/**</exclude>
+              </excludes>
+            </filter>
+            <filter>
+              <artifact>org.projectlombok:lombok</artifact>
+              <excludes>
+                <exclude>**/*</exclude>
+              </excludes>
+            </filter>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>google/**</exclude>
+              </excludes>
+            </filter>
+          </filters>
           <relocations>
             <relocation>
-              <pattern>io.grpc</pattern>
-              <shadedPattern>kr.co.rian.shaded.grpc</shadedPattern>
+              <pattern>android</pattern>
+              <shadedPattern>kr.co.rian.apmax.android</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>com.google</pattern>
-              <shadedPattern>kr.co.rian.shaded.google</shadedPattern>
+              <pattern>com</pattern>
+              <shadedPattern>kr.co.rian.apmax.com</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>org.objectweb.asm</pattern>
-              <shadedPattern>kr.co.rian.shaded.asm</shadedPattern>
+              <pattern>javax</pattern>
+              <shadedPattern>kr.co.rian.apmax.javax</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>org</pattern>
+              <shadedPattern>kr.co.rian.apmax.org</shadedPattern>
             </relocation>
             <relocation>
               <pattern>oshi</pattern>
-              <shadedPattern>kr.co.rian.shaded.oshi</shadedPattern>
+              <shadedPattern>kr.co.rian.apmax.oshi</shadedPattern>
             </relocation>
           </relocations>
         </configuration>
