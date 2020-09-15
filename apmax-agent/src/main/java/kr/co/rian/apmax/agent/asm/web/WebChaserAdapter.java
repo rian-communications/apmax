@@ -46,7 +46,7 @@ public class WebChaserAdapter extends ClassVisitor implements AgentLinkageAdapte
     if ("service".equals(name) &&
         "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V"
             .equals(descriptor)) {
-      return new ServletServiceMethodVisitor(visitor, access, descriptor);
+      return new HttpServletServiceMethodVisitor(visitor, access, descriptor);
     }
     
     return visitor;

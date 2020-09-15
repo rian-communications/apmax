@@ -20,7 +20,7 @@ class ChaserClient {
     
     statusChanged(channel);
     
-    final WebChaser web = WebChaser.newBuilder()
+    final SeizedBooty web = SeizedBooty.newBuilder()
         .setId("WAS-2ND")
         .setTimestamp(System.currentTimeMillis())
         .setUri("/pseudo/test")

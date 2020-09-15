@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent.asm.web;
 
-import kr.co.rian.apmax.agent.chaser.WebChaser;
-import kr.co.rian.apmax.agent.chaser.WebChaser.Stack;
+import kr.co.rian.apmax.agent.chaser.SeizedBooty;
+import kr.co.rian.apmax.agent.chaser.SeizedBooty.Stack;
 import kr.co.rian.apmax.agent.config.Config;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,14 +11,14 @@ import java.util.Enumeration;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ServletServiceChaser {
+public class HttpServletServiceChaser {
   
-  private static final ThreadLocal<WebChaser.Builder> CHASER =
-      new ThreadLocal<WebChaser.Builder>();
+  private static final ThreadLocal<SeizedBooty.Builder> CHASER =
+      new ThreadLocal<SeizedBooty.Builder>();
   
   public static void swipe(HttpServletRequest request) {
     System.out.println("swipe ^");
-    final WebChaser.Builder builder = WebChaser.newBuilder();
+    final SeizedBooty.Builder builder = SeizedBooty.newBuilder();
     CHASER.set(builder);
     
     builder.setId(Config.getId())
@@ -31,9 +31,9 @@ public class ServletServiceChaser {
   }
   
   public static void emit() {
-    final WebChaser.Builder builder = CHASER.get();
+    final SeizedBooty.Builder builder = CHASER.get();
     if (builder != null) {
-      final WebChaser webChaser = builder.build();
+      final SeizedBooty webChaser = builder.build();
       System.out.printf("ServletServiceChaser.emit() : \n%s\n------------\n",
           webChaser.toString());
       
@@ -42,7 +42,7 @@ public class ServletServiceChaser {
   }
   
   public static void addMethodStack(String signature, long elapsed) {
-    final WebChaser.Builder builder = CHASER.get();
+    final SeizedBooty.Builder builder = CHASER.get();
     if (builder != null) {
       builder.addStacks(
           Stack.newBuilder()
@@ -52,7 +52,7 @@ public class ServletServiceChaser {
     }
   }
   
-  private static void fillParametersAndHeaders(HttpServletRequest request, WebChaser.Builder builder) {
+  private static void fillParametersAndHeaders(HttpServletRequest request, SeizedBooty.Builder builder) {
     @SuppressWarnings("unchecked") final Map<String, String> parameters = request.getParameterMap();
     builder.putAllParameters(parameters);
     

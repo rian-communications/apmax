@@ -7,19 +7,10 @@ package rian.apmax;
 import public "rian/apmax/commons.proto";
 
 service ChaserService {
-  rpc collectWeb(WebChaser) returns (Noop);
-  rpc collectDb(DbChaser) returns (Noop);
+  rpc collectWeb(SeizedBooty) returns (Noop);
 }
 
-message DbChaser {
-  string id = 1;
-  int64 timestamp = 2;
-  string sql = 3;
-  map<string, string> parameters = 4;
-  string error = 5;
-}
-
-message WebChaser {
+message SeizedBooty {
   string id = 1;
   int64 timestamp = 2;
   string uri = 3;
@@ -30,7 +21,11 @@ message WebChaser {
 
   message Stack {
     string signature = 1;
-    int32 elapsed = 2;
+    map<string, bytes> arguments = 2;
+    int32 elapsed = 3;
+    int64 allocateBytes = 4;
+    int64 processCpuTime = 5;
+    float systemLoadAverage = 6;
   }
 }
 

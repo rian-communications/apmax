@@ -1,18 +1,16 @@
 package kr.co.rian.apmax.agent.asm.web;
 
 import kr.co.rian.apmax.agent.config.Config;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class ServletServiceMethodVisitor extends LocalVariablesSorter {
+public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   
   private static final String CHASER_CLASS_NAME =
-      ServletServiceChaser.class.getName().replace('.', '/');
+      HttpServletServiceChaser.class.getName().replace('.', '/');
   
-  public ServletServiceMethodVisitor(MethodVisitor visitor, int access, String descriptor) {
+  public HttpServletServiceMethodVisitor(MethodVisitor visitor, int access, String descriptor) {
     super(Config.ASM_VERSION, access, descriptor, visitor);
   }
   
