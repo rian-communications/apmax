@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.asm.web;
+package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.config.Config;
 import org.objectweb.asm.MethodVisitor;
@@ -29,29 +29,20 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   
   @Override
  	public void visitInsn(int opcode) {
-    System.out.printf("SerlvetserviceMethodVisitor.visitInsn(opcode: %d) ^\n", opcode);
-    
- 		if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN)) {
-      System.out.printf("SerlvetserviceMethodVisitor.visitInsn(opcode: %d) #1\n", opcode);
+ 		if (opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) {
       mv.visitMethodInsn(
           Opcodes.INVOKESTATIC,
           CHASER_CLASS_NAME,
           "emit",
           "()V",
           false);
-      
-      System.out.printf("SerlvetserviceMethodVisitor.visitInsn(opcode: %d) #2\n", opcode);
  		}
 
  		mv.visitInsn(opcode);
- 		
-    System.out.printf("ServletServiceMethodVisitor.visitInsn(opcode: %d) $\n", opcode);
  	}
  	
  	@Override
  	public void visitMaxs(int maxStack, int maxLocals) {
-    System.out.printf("visitMaxs(maxStack: %d, maxLocals: %d) ^\n", maxLocals, maxLocals);
-
     mv.visitMethodInsn(
         Opcodes.INVOKESTATIC,
         CHASER_CLASS_NAME,
@@ -59,8 +50,7 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
         "()V",
         false);
  		
-    mv.visitMaxs(maxStack + 8, maxLocals + 2);
-    System.out.printf("visitMaxs(maxStack: %d, maxLocals: %d) $\n", maxLocals, maxLocals);
+    mv.visitMaxs(maxStack + 1, maxLocals);
  	}
   
 }

@@ -21,8 +21,8 @@ message SeizedBooty {
 
   message Stack {
     string signature = 1;
-    map<string, bytes> arguments = 2;
-    int32 elapsed = 3;
+    repeated string parameters = 2;
+    int64 elapsed = 3;
     int64 allocateBytes = 4;
     int64 processCpuTime = 5;
     float systemLoadAverage = 6;

@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.asm.web;
+package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.chaser.SeizedBooty;
 import kr.co.rian.apmax.agent.chaser.SeizedBooty.Stack;
@@ -13,11 +13,10 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HttpServletServiceChaser {
   
-  private static final ThreadLocal<SeizedBooty.Builder> CHASER =
+  public static final ThreadLocal<SeizedBooty.Builder> CHASER =
       new ThreadLocal<SeizedBooty.Builder>();
   
   public static void swipe(HttpServletRequest request) {
-    System.out.println("swipe ^");
     final SeizedBooty.Builder builder = SeizedBooty.newBuilder();
     CHASER.set(builder);
     
@@ -26,8 +25,6 @@ public class HttpServletServiceChaser {
         .setUri(request.getRequestURI());
     
     fillParametersAndHeaders(request, builder);
-    
-    System.out.println("swipe $");
   }
   
   public static void emit() {
