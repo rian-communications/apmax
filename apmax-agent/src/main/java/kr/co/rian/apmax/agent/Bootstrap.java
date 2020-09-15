@@ -14,8 +14,8 @@ import java.util.concurrent.Executors;
 public class Bootstrap {
   
   static {
-    welcome();
     Config.configure();
+    welcome();
   }
 
   private Bootstrap() {
@@ -45,7 +45,7 @@ public class Bootstrap {
   }
   
   private static void welcome() {
-    final InputStream in = ClassLoader.getSystemResourceAsStream("apmax-agent-logo");
+    final InputStream in = ClassLoader.getSystemResourceAsStream("META-INF/agent-logo");
     
     if (in != null) {
       final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -59,6 +59,15 @@ public class Bootstrap {
       catch (IOException e) {
         // no work
       }
+    }
+  
+    if (Config.isDebugMode()) {
+      System.err.printf("\nagent.id: %s", Config.getId());
+      System.err.printf("\nagent.pollingInterval: %s", Config.getPollingInterval());
+      System.err.printf("\nagent.packages: %s", Config.getPackages().toString());
+      System.err.printf("\nserver.host: %s", Config.getServerHost());
+      System.err.printf("\nserver.port: %s", Config.getServerPort());
+      System.out.println();
     }
   }
   

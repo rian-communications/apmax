@@ -14,7 +14,7 @@ class ConfigTest {
   
   @Test
   void shouldGetPropertiesInClassPath() {
-    final URL url = ClassLoader.getSystemResource("apmax-agent-config.properties");
+    final URL url = ClassLoader.getSystemResource("agent-config.properties");
     assertTrue(new File(url.getFile()).exists());
   }
   

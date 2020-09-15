@@ -72,13 +72,13 @@ public final class Config {
     InputStream in = null;
     
     try {
-      final URL propFileUrl = ClassLoader.getSystemResource("apmax-agent-config.properties");
+      final URL propFileUrl = ClassLoader.getSystemResource("agent-config.properties");
       
       in = propFileUrl.openStream();
       props.load(in);
       
       in.close();
-      in = new FileInputStream(System.getProperty("user.home") + "/.apmax/apmax-agent-config.properties");
+      in = new FileInputStream(System.getProperty("user.home") + "/.apmax/agent-config.properties");
 
       final Properties userProps = new Properties();
       userProps.load(in);
