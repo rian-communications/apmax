@@ -3,6 +3,7 @@ package kr.co.rian.apmax.agent.config;
 import kr.co.rian.apmax.agent.exception.FallDownException;
 import org.objectweb.asm.Opcodes;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -40,6 +41,10 @@ public final class Config {
   public static String getId() {
     return props.getProperty("agent.id");
   }
+  
+  public static int getPollingInterval() {
+    return Integer.parseInt(props.getProperty("agent.polling.interval"));
+  }
 
   public static void setName(String name) {
     if (name != null && !name.trim().equals("")) {
@@ -71,9 +76,20 @@ public final class Config {
       
       in = propFileUrl.openStream();
       props.load(in);
+      
+      in.close();
+      in = new FileInputStream(System.getProperty("user.home") + "/.apmax/apmax-agent-config.properties");
+
+      final Properties userProps = new Properties();
+      userProps.load(in);
+      
+      for (final String name : userProps.stringPropertyNames()) {
+        props.setProperty(name, userProps.getProperty(name));
+      }
     }
     catch (IOException e) {
-      throw new FallDownException(e);
+      // throw new FallDownException(e);
+      // no work
     }
     finally {
       if (in != null) {

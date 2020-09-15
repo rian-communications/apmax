@@ -3,7 +3,6 @@ package kr.co.rian.apmax.agent.port.performance;
 import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import kr.co.rian.apmax.agent.Commons;
 import kr.co.rian.apmax.agent.Commons.Noop;
 import kr.co.rian.apmax.agent.config.Config;
 import kr.co.rian.apmax.agent.performance.SystemPerformance;
@@ -53,7 +52,7 @@ public class SystemPerformanceWorker implements Runnable {
       NoopListenableService.listening(collect);
       
       try {
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(Config.getPollingInterval());
       }
       catch (InterruptedException e) {
         Thread.currentThread().interrupt();
