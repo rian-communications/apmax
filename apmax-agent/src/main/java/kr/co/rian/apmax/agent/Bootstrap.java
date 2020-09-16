@@ -35,6 +35,7 @@ public class Bootstrap {
         new APMAXAgentTransformer(),
         true
     );
+    
   }
   
   public static void agentmain(String options, Instrumentation instrumentation) {
@@ -61,11 +62,11 @@ public class Bootstrap {
     }
   
     if (Config.isDebugMode()) {
-      System.err.printf("\nagent.id: %s", Config.getId());
-      System.err.printf("\nagent.pollingInterval: %s", Config.getPollingInterval());
-      System.err.printf("\nagent.packages: %s", Config.getPackages().toString());
-      System.err.printf("\nserver.host: %s", Config.getServerHost());
-      System.err.printf("\nserver.port: %s", Config.getServerPort());
+      System.err.printf("agent.id: %s%n", Config.getId());
+      System.err.printf("agent.pollingInterval: %s%n", Config.getPollingInterval());
+      System.err.printf("agent.packages: %s%n", Config.getPackages().toString());
+      System.err.printf("server.host: %s%n", Config.getServerHost());
+      System.err.printf("server.port: %s%n", Config.getServerPort());
       System.out.println();
     }
   }

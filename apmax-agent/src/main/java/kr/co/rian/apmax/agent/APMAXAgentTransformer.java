@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent;
 
+import kr.co.rian.apmax.agent.asm.web.chaser.ChaserAdapter;
 import kr.co.rian.apmax.agent.asm.web.servlet.HttpServletServiceAdapter;
-import kr.co.rian.apmax.agent.asm.web.servlet.ServletMonitoredAdapter;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
@@ -10,12 +10,17 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
   
   @Override
   public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+    // 정의된 Servlet 이 호출 될 때,
+    // 추적을 위한 코드를 이식 시켜요.
     if (isServletClass(className)) {
-      return new HttpServletServiceAdapter(classfileBuffer).toByteArray();
+      return new HttpServletServiceAdapter(classfileBuffer)
+          .toByteArray();
     }
     
-    if (isMonitorTargetClass(className)) {
-      return new ServletMonitoredAdapter(className, classfileBuffer).toByteArray();
+    // 추적할 대상을 찾아서 관련 정보를 캐내요.
+    if (isChaserTargetClass(className)) {
+      return new ChaserAdapter(className, classfileBuffer)
+          .toByteArray();
     }
     
     return new byte[0];
@@ -31,7 +36,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
     return false;
   }
   
-  private boolean isMonitorTargetClass(final String className) {
+  private boolean isChaserTargetClass(final String className) {
     for (final String pkg : Config.getPackages()) {
       if (className.startsWith(pkg)) {
         return true;

@@ -29,7 +29,8 @@ public class MockServletASM extends HttpServlet {
   }
   
   public String shout(int count) {
-    return String.format("I shout %dth!!!", count);
+    final String format = "I shout %dth!!!";
+    return String.format(format, count);
   }
   
   public static void main(String[] args) throws ServletException, IOException {
