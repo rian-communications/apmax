@@ -17,11 +17,12 @@ import java.util.Set;
 public final class Config {
   
   public static final int ASM_VERSION = Opcodes.ASM7;
-
+  
   protected static final Set<String> DEFAULT_JDBC_CLASSES = new HashSet<String>();
   protected static final Set<String> DEFAULT_SERVLET_CLASSES = new HashSet<String>();
   
   private static final Properties props = new Properties();
+  private static final Set<String> packages;
   
   static {
     DEFAULT_SERVLET_CLASSES.add("javax/servlet/http/HttpServlet");
@@ -32,6 +33,11 @@ public final class Config {
     
     // 설정파일을 통해서 초기 설정을 구성해요.
     configure();
+
+    packages = new HashSet<String>();
+    for (String pkg : props.getProperty("monitor.packages").split("[\\s,|]+")) {
+      packages.add(pkg.replace('.', '/'));
+    }
   }
   
   
@@ -46,7 +52,7 @@ public final class Config {
   public static int getPollingInterval() {
     return Integer.parseInt(props.getProperty("polling.interval"));
   }
-
+  
   public static void setId(String name) {
     if (name != null && !name.trim().equals("")) {
       props.setProperty("id", name.trim());
@@ -54,7 +60,7 @@ public final class Config {
   }
   
   public static Set<String> getPackages() {
-    return splitAndToSet(props.getProperty("monitor.packages"));
+    return packages;
   }
   
   public static String getServerHost() {
@@ -80,7 +86,7 @@ public final class Config {
       
       in.close();
       in = new FileInputStream(System.getProperty("user.home") + "/.apmax/agent-config.properties");
-
+      
       final Properties userProps = new Properties();
       userProps.load(in);
       
@@ -110,10 +116,6 @@ public final class Config {
         throw new FallDownException(e);
       }
     }
-  }
-  
-  public static Set<String> splitAndToSet(final String values) {
-    return new HashSet<String>(Arrays.asList(values.split("[\\s,|]+")));
   }
   
 }
