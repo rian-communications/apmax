@@ -2,7 +2,7 @@ package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.chaser.SeizedBooty;
 import kr.co.rian.apmax.agent.chaser.SeizedBooty.Stack;
-import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.Config;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

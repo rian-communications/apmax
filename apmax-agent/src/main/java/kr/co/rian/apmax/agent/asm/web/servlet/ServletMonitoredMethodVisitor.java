@@ -1,6 +1,6 @@
 package kr.co.rian.apmax.agent.asm.web.servlet;
 
-import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.Config;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;

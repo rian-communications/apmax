@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import kr.co.rian.apmax.agent.Commons.Noop;
-import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.Config;
 import kr.co.rian.apmax.agent.performance.SystemPerformance;
 import kr.co.rian.apmax.agent.performance.SystemPerformance.Disk;
 import kr.co.rian.apmax.agent.performance.SystemPerformanceServiceGrpc;

@@ -47,7 +47,7 @@ public final class Config {
     return Integer.parseInt(props.getProperty("polling.interval"));
   }
 
-  public static void setName(String name) {
+  public static void setId(String name) {
     if (name != null && !name.trim().equals("")) {
       props.setProperty("id", name.trim());
     }
@@ -89,7 +89,6 @@ public final class Config {
       }
     }
     catch (IOException e) {
-      // throw new FallDownException(e);
       // no work
     }
     finally {

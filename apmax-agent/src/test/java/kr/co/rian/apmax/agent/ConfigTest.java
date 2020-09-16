@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent;
 
 
-import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.Config;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

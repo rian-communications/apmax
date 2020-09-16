@@ -2,7 +2,6 @@ package kr.co.rian.apmax.agent;
 
 import kr.co.rian.apmax.agent.asm.web.servlet.HttpServletServiceAdapter;
 import kr.co.rian.apmax.agent.asm.web.servlet.ServletMonitoredAdapter;
-import kr.co.rian.apmax.agent.config.Config;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;

@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.asm.AgentLinkageAdapter;
-import kr.co.rian.apmax.agent.config.Config;
+import kr.co.rian.apmax.agent.Config;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
