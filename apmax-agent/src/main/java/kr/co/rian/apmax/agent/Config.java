@@ -1,4 +1,4 @@
-package kr.co.rian.apmax.agent.config;
+package kr.co.rian.apmax.agent;
 
 import kr.co.rian.apmax.agent.exception.FallDownException;
 import org.objectweb.asm.Opcodes;
@@ -17,8 +17,9 @@ import java.util.Set;
 public final class Config {
   
   public static final int ASM_VERSION = Opcodes.ASM7;
-  public static final Set<String> DEFAULT_JDBC_CLASSES = new HashSet<String>();
-  public static final Set<String> DEFAULT_SERVLET_CLASSES = new HashSet<String>();
+
+  protected static final Set<String> DEFAULT_JDBC_CLASSES = new HashSet<String>();
+  protected static final Set<String> DEFAULT_SERVLET_CLASSES = new HashSet<String>();
   
   private static final Properties props = new Properties();
   
@@ -39,21 +40,21 @@ public final class Config {
   
   
   public static String getId() {
-    return props.getProperty("agent.id");
+    return props.getProperty("id");
   }
   
   public static int getPollingInterval() {
-    return Integer.parseInt(props.getProperty("agent.polling.interval"));
+    return Integer.parseInt(props.getProperty("polling.interval"));
   }
 
   public static void setName(String name) {
     if (name != null && !name.trim().equals("")) {
-      props.setProperty("agent.id", name.trim());
+      props.setProperty("id", name.trim());
     }
   }
   
   public static Set<String> getPackages() {
-    return splitAndToSet(props.getProperty("agent.monitor-package-prefix"));
+    return splitAndToSet(props.getProperty("monitor.packages"));
   }
   
   public static String getServerHost() {
@@ -65,7 +66,7 @@ public final class Config {
   }
   
   public static boolean isDebugMode() {
-    return Boolean.parseBoolean(props.getProperty("agent.debug", "false"));
+    return Boolean.parseBoolean(props.getProperty("debug", "false"));
   }
   
   public static void configure() {
@@ -104,7 +105,7 @@ public final class Config {
     
     if (getId() == null || "".equals(getId())) {
       try {
-        props.setProperty("agent.id", InetAddress.getLocalHost().getHostName());
+        props.setProperty("id", InetAddress.getLocalHost().getHostName());
       }
       catch (UnknownHostException e) {
         throw new FallDownException(e);
