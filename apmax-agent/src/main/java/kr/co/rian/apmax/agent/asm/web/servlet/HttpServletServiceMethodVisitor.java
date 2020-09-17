@@ -1,5 +1,6 @@
 package kr.co.rian.apmax.agent.asm.web.servlet;
 
+import jdk.internal.org.objectweb.asm.Type;
 import kr.co.rian.apmax.agent.Config;
 import kr.co.rian.apmax.agent.chaser.SeizedBooty;
 import org.objectweb.asm.MethodVisitor;
@@ -12,10 +13,9 @@ import java.util.Map;
 
 public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   
-  public static final ThreadLocal<SeizedBooty.Builder> BOOTY = new ThreadLocal<SeizedBooty.Builder>();
   
   private static final String CLASS_INTERNAL_NAME =
-      HttpServletServiceMethodVisitor.class.getName().replace('.', '/');
+      Type.getInternalName(HttpServletServiceMethodVisitor.class);
   
   public HttpServletServiceMethodVisitor(MethodVisitor visitor, int access, String descriptor) {
     super(Config.ASM_VERSION, access, descriptor, visitor);
@@ -48,40 +48,30 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
  		mv.visitInsn(opcode);
  	}
  	
- 	@Override
- 	public void visitMaxs(int maxStack, int maxLocals) {
-    mv.visitMethodInsn(
-        Opcodes.INVOKESTATIC,
-        CLASS_INTERNAL_NAME,
-        "emit",
-        "()V",
-        false);
- 		
-    mv.visitMaxs(maxStack + 1, maxLocals);
- 	}
- 	
   public static void swipe(HttpServletRequest request) {
     final SeizedBooty.Builder builder = SeizedBooty.newBuilder();
-    BOOTY.set(builder);
+    HttpServletServiceAdapter.BOOTY.set(builder);
     
     builder.setId(Config.getId())
         .setTimestamp(System.currentTimeMillis())
         .setUri(request.getRequestURI());
     
     fillParametersAndHeaders(request, builder);
+    
+    System.err.printf("swipe(request): %d%n", builder.getTimestamp());
   }
   
   public static void emit() {
-    final SeizedBooty.Builder builder = BOOTY.get();
+    final SeizedBooty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
     if (builder != null) {
-      System.err.println("emit()");
+      System.err.printf("emit(): %d%n", builder.getTimestamp());
 //      final SeizedBooty webChaser = builder.build();
-      BOOTY.remove();
+      HttpServletServiceAdapter.BOOTY.remove();
     }
   }
   
   public static void addMethodStack(String signature, long elapsed) {
-    final SeizedBooty.Builder builder = BOOTY.get();
+    final SeizedBooty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
     if (builder != null) {
       builder.addStacks(
           SeizedBooty.Stack.newBuilder()

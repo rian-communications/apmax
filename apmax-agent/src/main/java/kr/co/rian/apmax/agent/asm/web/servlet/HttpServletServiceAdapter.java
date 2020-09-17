@@ -2,12 +2,15 @@ package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.asm.AgentLinkageAdapter;
 import kr.co.rian.apmax.agent.Config;
+import kr.co.rian.apmax.agent.chaser.SeizedBooty;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 public class HttpServletServiceAdapter extends ClassVisitor implements AgentLinkageAdapter {
+  
+  public static final ThreadLocal<SeizedBooty.Builder> BOOTY = new ThreadLocal<SeizedBooty.Builder>();
   
   private final ClassWriter writer;
   
