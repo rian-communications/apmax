@@ -1,16 +1,15 @@
 package asm;
 
-import jdk.nashorn.internal.codegen.types.Type;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
-public class ASMExample2 extends ClassLoader implements Opcodes {
+public class ASMExample3 extends ClassLoader implements Opcodes {
   
   public static byte[] writeClassFile(ClassWriter writer, String name) throws IOException {
     byte[] code = writer.toByteArray();
@@ -72,12 +71,84 @@ public class ASMExample2 extends ClassLoader implements Opcodes {
     mv.visitMaxs(0, 0);
     mv.visitEnd();
     
+    
+    //
+    mv = writer.visitMethod(
+        ACC_PUBLIC,
+        "assignStr",
+        "()V",
+        null, null
+    );
+    mv.visitCode();
+    mv.visitLdcInsn("Hi~");
+    mv.visitVarInsn(ASTORE, 1);
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    
+    //
+    mv = writer.visitMethod(
+        ACC_PUBLIC,
+        "assignInt",
+        "()V",
+        null, null
+    );
+    mv.visitCode();
+    mv.visitInsn(ICONST_0); // 음수 1 (minus 1) 을 constraint pool(opstack) 에 push
+    mv.visitVarInsn(ISTORE, 1);
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    
+    //
+    mv = writer.visitMethod(
+        ACC_PUBLIC,
+        "assignLDCInt",
+        "()V",
+        null, null
+    );
+    mv.visitCode();
+    mv.visitLdcInsn(56001);
+    mv.visitVarInsn(ISTORE, 1);
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    
+    //
+    mv = writer.visitMethod(
+        ACC_PUBLIC,
+        "assignObjectArray",
+        "(Ljava/lang/String;IJ)V",
+        null, null
+    );
+    mv.visitCode();
+    mv.visitIntInsn(BIPUSH, 3);
+    mv.visitTypeInsn(ANEWARRAY, "java/lang/Object");
+    mv.visitVarInsn(ASTORE, 4);
+  
+    mv.visitVarInsn(ALOAD, 4);
+    mv.visitIntInsn(BIPUSH, 0);
+    mv.visitVarInsn(ALOAD, 1);
+    mv.visitInsn(AASTORE);
+    
+    mv.visitVarInsn(ALOAD, 4);
+    mv.visitIntInsn(BIPUSH, 1);
+    mv.visitVarInsn(ILOAD, 2);
+    mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
+    mv.visitInsn(AASTORE);
+    
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    
     final byte[] bytes = writeClassFile(writer, "./apmax-agent/target/classes/HelloASM.class");
     
-    ASMExample2 ex = new ASMExample2();
+    ASMExample3 ex = new ASMExample3();
     
     final Class<?> clazz = ex.defineClass(className, bytes, 0, bytes.length);
-    clazz.newInstance();
+    final Object obj = clazz.newInstance();
+  
+    clazz.getMethod("assignStr").invoke(obj);
   }
   
 }
