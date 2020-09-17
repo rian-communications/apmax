@@ -1,5 +1,7 @@
 package kr.co.rian.apmax.agent.port.performance;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
@@ -11,6 +13,7 @@ import oshi.software.os.OSFileStore;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SystemPerformanceService {
   
   private static final SystemInfo system = new SystemInfo();
@@ -18,9 +21,6 @@ public class SystemPerformanceService {
   private static final FileSystem fileSystem = system.getOperatingSystem().getFileSystem();
   private static final NetworkIF[] networkInterfaces = hardware.getNetworkIFs();
   
-  
-  private SystemPerformanceService() {
-  }
   
   public static double getCpu() {
     return hardware.getProcessor().getSystemCpuLoad();

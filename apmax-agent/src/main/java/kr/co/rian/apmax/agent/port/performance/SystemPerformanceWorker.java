@@ -11,24 +11,51 @@ import kr.co.rian.apmax.agent.performance.SystemPerformanceServiceGrpc;
 import kr.co.rian.apmax.agent.performance.SystemPerformanceServiceGrpc.SystemPerformanceServiceFutureStub;
 import kr.co.rian.apmax.agent.port.NoopListenableService;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static kr.co.rian.apmax.agent.performance.SystemPerformance.Memory;
 
-public class SystemPerformanceWorker implements Runnable {
+public class SystemPerformanceWorker extends Thread {
   
   private static final ManagedChannel channel;
   private static final SystemPerformanceServiceFutureStub stub;
   
   static {
+    final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     final ManagedChannelBuilder<?> builder = ManagedChannelBuilder
         .forAddress(Config.getServerHost(), Config.getServerPort())
-        .executor(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))
+        .executor(executor)
         .usePlaintext();
     
     channel = builder.build();
     stub = SystemPerformanceServiceGrpc.newFutureStub(channel);
+
+    Runtime.getRuntime().addShutdownHook(new Thread("gRPC-shutdown-hook") {
+      @Override
+      public void run() {
+        executor.shutdownNow();
+
+        try {
+          if (!executor.awaitTermination(Config.getPollingInterval(), TimeUnit.SECONDS)) {
+            executor.shutdown();
+          }
+        }
+        catch (InterruptedException e) {
+          this.interrupt();
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+  
+  private boolean running = true;
+  
+  
+  public SystemPerformanceWorker() {
+    setName("system-performance-worker");
+    setDaemon(true);
   }
   
   @Override
@@ -55,11 +82,19 @@ public class SystemPerformanceWorker implements Runnable {
         TimeUnit.SECONDS.sleep(Config.getPollingInterval());
       }
       catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
         e.printStackTrace(System.err);
+        Thread.currentThread().interrupt();
+      }
+      
+      if (!running) {
+        break;
       }
     }
     
+  }
+  
+  public void die() {
+    running = false;
   }
   
 }
