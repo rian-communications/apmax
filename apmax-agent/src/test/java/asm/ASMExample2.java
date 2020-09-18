@@ -22,7 +22,7 @@ public class ASMExample2 extends ClassLoader implements Opcodes {
     return code;
   }
   
-  public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+  public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException {
     final String className = "HelloASM";
     final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
     

@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Scanner;
 
 public class MockServletASM extends HttpServlet {
   
@@ -21,27 +22,29 @@ public class MockServletASM extends HttpServlet {
     System.out.println();
 
     System.out.println("HTTP request by GET method!");
-    final String shouted = shout(123);
+    final String shouted = shout(123, "hello");
     System.out.println(shouted);
 
     System.out.println();
     System.out.println();
   }
   
-  public String shout(int count) {
-    final String format = "I shout %dth!!!";
-    return String.format(format, count);
+  public String shout(int count, Object b) {
+    final String format = "I shout %dth!!! === %s";
+    return String.format(format, count, b.toString());
   }
   
-  public static void main(String[] args) throws ServletException, IOException {
+  public static void main(String[] args) throws ServletException, IOException, InterruptedException {
     final MockServletASM mockServletASM = new MockServletASM();
     final MockGetReq request = new MockGetReq(Mockito.mock(HttpServletRequest.class));
     final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-    
+  
+    System.out.println("ServletRequest.service(req, res) start!");
     mockServletASM.service(
         request,
         response
     );
+    System.out.println("ServletRequest.service(req, res) end!");
   }
   
   private static class MockGetReq extends HttpServletRequestWrapper {

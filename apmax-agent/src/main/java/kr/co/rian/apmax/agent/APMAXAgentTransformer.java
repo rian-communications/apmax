@@ -1,6 +1,6 @@
 package kr.co.rian.apmax.agent;
 
-import kr.co.rian.apmax.agent.asm.web.chaser.ChaserAdapter;
+import kr.co.rian.apmax.agent.asm.web.chaser.HttpServletChaserAdapter;
 import kr.co.rian.apmax.agent.asm.web.servlet.HttpServletServiceAdapter;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -19,7 +19,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
     
     // 추적할 대상을 찾아서 관련 정보를 캐내요.
     if (isChaserTargetClass(className)) {
-      return new ChaserAdapter(className, classfileBuffer)
+      return new HttpServletChaserAdapter(className, classfileBuffer)
           .toByteArray();
     }
     
