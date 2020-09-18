@@ -72,63 +72,8 @@ public class HttpServletChaserAdapter extends ClassVisitor implements AgentLinka
     );
   }
   
-  private static void invokeMethodSwipe(MethodVisitor mv, String classAndMethod, Type[] arguments, int arrayIndex) {
-    mv.visitLdcInsn(classAndMethod);
-    
-    if (0 == arguments.length) {
-      mv.visitInsn(ACONST_NULL);
-    }
-    else {
-      mv.visitIntInsn(BIPUSH, arguments.length);
-      mv.visitTypeInsn(ANEWARRAY, TYPE_OBJECT);
-      mv.visitVarInsn(ASTORE, arrayIndex);
-
-      int index = 1;
-      int arrayPoint = 0;
-      for (final Type argument : arguments) {
-        mv.visitVarInsn(ALOAD, arrayIndex);
-        mv.visitIntInsn(BIPUSH, arrayPoint++);
-        
-        switch (argument.getSort()) {
-          case Type.BOOLEAN:
-          case Type.CHAR:
-          case Type.BYTE:
-          case Type.SHORT:
-          case Type.INT:
-            mv.visitVarInsn(ILOAD, index);
-            break;
-          case Type.FLOAT:
-            mv.visitVarInsn(FLOAD, index);
-            break;
-          case Type.LONG:
-            mv.visitVarInsn(LLOAD, index);
-            break;
-          case Type.DOUBLE:
-            mv.visitVarInsn(DLOAD, index);
-            break;
-          default:
-            mv.visitVarInsn(ALOAD, index);
-        }
-        
-        index += argument.getSize();
-        mv.visitInsn(AASTORE);
-        
-      }
-      
-      mv.visitVarInsn(ALOAD, arrayIndex);
-    }
-    
-    mv.visitMethodInsn(
-        INVOKESTATIC,
-        INTERNAL_NAME,
-        "swipe",
-        "(Ljava/lang/String;[Ljava/lang/Object;)V",
-        false
-    );
-  }
   
-  
-  private class ChaserTargetMethodVisitor extends LocalVariablesSorter implements Opcodes {
+  private static class ChaserTargetMethodVisitor extends LocalVariablesSorter implements Opcodes {
     
     private final String classAndMethod;
     private final Type[] arguments;
@@ -161,6 +106,62 @@ public class HttpServletChaserAdapter extends ClassVisitor implements AgentLinka
         mv.visitEnd();
       }
     }
+    
+    private void invokeMethodSwipe(MethodVisitor mv, String classAndMethod, Type[] arguments, int arrayIndex) {
+      mv.visitLdcInsn(classAndMethod);
+      
+      if (0 == arguments.length) {
+        mv.visitInsn(ACONST_NULL);
+      }
+      else {
+        mv.visitIntInsn(BIPUSH, arguments.length);
+        mv.visitTypeInsn(ANEWARRAY, TYPE_OBJECT);
+        mv.visitVarInsn(ASTORE, arrayIndex);
+  
+        int index = 1;
+        int arrayPoint = 0;
+        for (final Type argument : arguments) {
+          mv.visitVarInsn(ALOAD, arrayIndex);
+          mv.visitIntInsn(BIPUSH, arrayPoint++);
+          
+          switch (argument.getSort()) {
+            case Type.BOOLEAN:
+            case Type.CHAR:
+            case Type.BYTE:
+            case Type.SHORT:
+            case Type.INT:
+              mv.visitVarInsn(ILOAD, index);
+              break;
+            case Type.FLOAT:
+              mv.visitVarInsn(FLOAD, index);
+              break;
+            case Type.LONG:
+              mv.visitVarInsn(LLOAD, index);
+              break;
+            case Type.DOUBLE:
+              mv.visitVarInsn(DLOAD, index);
+              break;
+            default:
+              mv.visitVarInsn(ALOAD, index);
+          }
+          
+          index += argument.getSize();
+          mv.visitInsn(AASTORE);
+          
+        }
+        
+        mv.visitVarInsn(ALOAD, arrayIndex);
+      }
+      
+      mv.visitMethodInsn(
+          INVOKESTATIC,
+          INTERNAL_NAME,
+          "swipe",
+          "(Ljava/lang/String;[Ljava/lang/Object;)V",
+          false
+      );
+    }
+    
   }
   
 }
