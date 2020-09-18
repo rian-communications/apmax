@@ -30,7 +30,7 @@
   </repositories>
 
   <properties>
-    <asm.version>7.0</asm.version>
+    <asm.version>8.0.1</asm.version>
     <grpc.version>1.31.1</grpc.version>
     <oshi.version>3.13.6</oshi.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
