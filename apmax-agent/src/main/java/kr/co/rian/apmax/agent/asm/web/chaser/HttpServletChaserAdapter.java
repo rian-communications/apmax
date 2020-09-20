@@ -2,6 +2,7 @@ package kr.co.rian.apmax.agent.asm.web.chaser;
 
 import kr.co.rian.apmax.agent.Config;
 import kr.co.rian.apmax.agent.asm.AgentLinkageAdapter;
+import kr.co.rian.apmax.agent.asm.InvokeStatic;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -11,6 +12,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import java.util.Arrays;
+
+import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 
 public class HttpServletChaserAdapter extends ClassVisitor implements AgentLinkageAdapter, Opcodes {
   
@@ -27,7 +30,7 @@ public class HttpServletChaserAdapter extends ClassVisitor implements AgentLinka
     final ClassReader reader = new ClassReader(classfileBuffer);
     this.cv = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
     
-    reader.accept(this, 0);
+    reader.accept(this, EXPAND_FRAMES);
   }
   
   @Override
@@ -126,28 +129,44 @@ public class HttpServletChaserAdapter extends ClassVisitor implements AgentLinka
           
           switch (argument.getSort()) {
             case Type.BOOLEAN:
+              mv.visitVarInsn(ILOAD, index);
+              InvokeStatic.booleanValueOf(mv);
+              break;
             case Type.CHAR:
+              mv.visitVarInsn(ILOAD, index);
+              InvokeStatic.characterValueOf(mv);
+              break;
             case Type.BYTE:
+              mv.visitVarInsn(ILOAD, index);
+              InvokeStatic.byteValueOf(mv);
+              break;
             case Type.SHORT:
+              mv.visitVarInsn(ILOAD, index);
+              InvokeStatic.shortValueOf(mv);
+              break;
             case Type.INT:
               mv.visitVarInsn(ILOAD, index);
+              InvokeStatic.integerValueOf(mv);
               break;
             case Type.FLOAT:
               mv.visitVarInsn(FLOAD, index);
+              InvokeStatic.floatValueOf(mv);
               break;
             case Type.LONG:
               mv.visitVarInsn(LLOAD, index);
+              InvokeStatic.longValueOf(mv);
               break;
             case Type.DOUBLE:
               mv.visitVarInsn(DLOAD, index);
+              InvokeStatic.doubleValueOf(mv);
               break;
             default:
               mv.visitVarInsn(ALOAD, index);
           }
-          
-          index += argument.getSize();
+
           mv.visitInsn(AASTORE);
-          
+         
+          index += argument.getSize();
         }
         
         mv.visitVarInsn(ALOAD, arrayIndex);

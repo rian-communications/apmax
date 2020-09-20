@@ -25,4 +25,9 @@ public class MockHttpServletChaserTarget {
     );
   }
   
+  public String shout(int count) {
+    final String format = "I shout %dth!!!!";
+    return String.format(format, count);
+  }
+  
 }

@@ -18,7 +18,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
     }
     
     // Servlet 관련 대상을 찾아서 추적해요.
-    if (isChaserTargetClass(className)) {
+    if (isChasingTargetClass(className)) {
       return new HttpServletChaserAdapter(classfileBuffer)
           .toByteArray();
     }
@@ -36,7 +36,7 @@ public class APMAXAgentTransformer implements ClassFileTransformer {
     return false;
   }
   
-  private boolean isChaserTargetClass(final String className) {
+  private boolean isChasingTargetClass(final String className) {
     for (final String pkg : Config.getPackages()) {
       if (className.startsWith(pkg)) {
         return true;

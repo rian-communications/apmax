@@ -1,5 +1,6 @@
 package kr.co.rian.apmax.agent.test;
 
+import kr.co.rian.apmax.agent.asm.web.chaser.MockHttpServletChaserTarget;
 import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
@@ -23,6 +24,9 @@ public class MockServletASM extends HttpServlet {
     System.out.println("HTTP request by GET method!");
     final String shouted = shout(123);
     System.out.println(shouted);
+    
+    methodC(true, 'C', (byte) 0x0001, Short.MAX_VALUE, Integer.MAX_VALUE,
+        Float.MIN_VALUE, Long.MAX_VALUE, Double.MIN_VALUE);
 
     System.out.println();
     System.out.println();
@@ -31,6 +35,14 @@ public class MockServletASM extends HttpServlet {
   public String shout(int count) {
     final String format = "I shout %dth!!!";
     return String.format(format, count);
+  }
+  
+  
+  public void methodC(boolean param1, char param2, byte param3, short param4, int param5, float param6, long param7, double param8) {
+    System.out.printf(
+        "%s.methodC(...)%n",
+        MockHttpServletChaserTarget.class.getName()
+    );
   }
   
   public static void main(String[] args) throws ServletException, IOException {
