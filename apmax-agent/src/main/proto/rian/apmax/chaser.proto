@@ -5,27 +5,29 @@ option java_package = "kr.co.rian.apmax.agent.chaser";
 package rian.apmax;
 
 import public "rian/apmax/commons.proto";
+import public "google/protobuf/any.proto";
 
 service ChaserService {
-  rpc collectWeb(SeizedBooty) returns (Noop);
+  rpc collectWeb(Booty) returns (Noop);
 }
 
-message SeizedBooty {
+message Booty {
   string id = 1;
   int64 timestamp = 2;
   string uri = 3;
-  map<string, string> parameters = 4;
-  map<string, string> headers = 5;
-  repeated Stack stacks = 6;
+  map<string, string> parameter = 4;
+  map<string, string> header = 5;
+  repeated Trove troves = 6;
   string error = 7;
 
-  message Stack {
+  message Trove {
     string signature = 1;
-    repeated string parameters = 2;
+    map<string, bytes> parameter = 2;
     int64 elapsed = 3;
     int64 allocateBytes = 4;
     int64 processCpuTime = 5;
     float systemLoadAverage = 6;
+    repeated Trove children = 7;
   }
 }
 

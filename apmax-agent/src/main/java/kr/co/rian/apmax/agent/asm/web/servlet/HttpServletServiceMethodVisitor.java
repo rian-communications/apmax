@@ -1,7 +1,7 @@
 package kr.co.rian.apmax.agent.asm.web.servlet;
 
 import kr.co.rian.apmax.agent.Config;
-import kr.co.rian.apmax.agent.chaser.SeizedBooty;
+import kr.co.rian.apmax.agent.chaser.Booty;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -49,7 +49,7 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   }
   
   public static void swipe(HttpServletRequest request) {
-    final SeizedBooty.Builder builder = SeizedBooty.newBuilder();
+    final Booty.Builder builder = Booty.newBuilder();
     HttpServletServiceAdapter.BOOTY.set(builder);
     
     builder.setId(Config.getId())
@@ -62,7 +62,7 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   }
   
   public static void emit() {
-    final SeizedBooty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
+    final Booty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
     if (builder != null) {
       System.err.printf("emit(): %d%n", builder.getTimestamp());
       HttpServletServiceAdapter.BOOTY.remove();
@@ -70,24 +70,24 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
   }
   
   public static void addMethodStack(String signature, long elapsed) {
-    final SeizedBooty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
+    final Booty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
     if (builder != null) {
-      builder.addStacks(
-          SeizedBooty.Stack.newBuilder()
+      builder.addTroves(
+          Booty.Trove.newBuilder()
               .setSignature(signature)
               .setElapsed((int) (builder.getTimestamp() - elapsed)).build()
       );
     }
   }
   
-  private static void fillParametersAndHeaders(HttpServletRequest request, SeizedBooty.Builder builder) {
+  private static void fillParametersAndHeaders(HttpServletRequest request, Booty.Builder builder) {
     @SuppressWarnings("unchecked") final Map<String, String> parameters = request.getParameterMap();
-    builder.putAllParameters(parameters);
+    builder.putAllParameter(parameters);
     
     @SuppressWarnings("unchecked") final Enumeration<String> headerNames = request.getHeaderNames();
     while (headerNames.hasMoreElements()) {
       final String headerName = headerNames.nextElement();
-      builder.putHeaders(headerName, request.getHeader(headerName));
+      builder.putHeader(headerName, request.getHeader(headerName));
     }
   }
   

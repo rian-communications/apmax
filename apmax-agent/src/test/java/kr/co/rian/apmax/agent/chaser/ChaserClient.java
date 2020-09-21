@@ -20,14 +20,14 @@ class ChaserClient {
     
     statusChanged(channel);
     
-    final SeizedBooty web = SeizedBooty.newBuilder()
+    final Booty web = Booty.newBuilder()
         .setId("WAS-2ND")
         .setTimestamp(System.currentTimeMillis())
         .setUri("/pseudo/test")
-        .putParameters("ping", "hello")
-        .putParameters("pong", "hi")
-        .putHeaders("head", "merry")
-        .putHeaders("arms", "8")
+        .putParameter("ping", "hello")
+        .putParameter("pong", "hi")
+        .putHeader("head", "merry")
+        .putHeader("arms", "8")
         .setError("error!")
         .build();
     
