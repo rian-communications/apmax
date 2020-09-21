@@ -1,10 +1,10 @@
 package kr.co.rian.apmax.agent.asm.web.servlet;
 
-import jdk.internal.org.objectweb.asm.Type;
 import kr.co.rian.apmax.agent.Config;
 import kr.co.rian.apmax.agent.chaser.SeizedBooty;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,24 +30,24 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
         "swipe",
         "(Ljavax/servlet/http/HttpServletRequest;)V",
         false);
-
+    
     mv.visitCode();
   }
   
   @Override
- 	public void visitInsn(int opcode) {
- 		if (opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) {
+  public void visitInsn(int opcode) {
+    if (opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) {
       mv.visitMethodInsn(
           Opcodes.INVOKESTATIC,
           CLASS_INTERNAL_NAME,
           "emit",
           "()V",
           false);
- 		}
+    }
 
- 		mv.visitInsn(opcode);
- 	}
- 	
+    mv.visitInsn(opcode);
+  }
+  
   public static void swipe(HttpServletRequest request) {
     final SeizedBooty.Builder builder = SeizedBooty.newBuilder();
     HttpServletServiceAdapter.BOOTY.set(builder);
@@ -65,7 +65,6 @@ public class HttpServletServiceMethodVisitor extends LocalVariablesSorter {
     final SeizedBooty.Builder builder = HttpServletServiceAdapter.BOOTY.get();
     if (builder != null) {
       System.err.printf("emit(): %d%n", builder.getTimestamp());
-//      final SeizedBooty webChaser = builder.build();
       HttpServletServiceAdapter.BOOTY.remove();
     }
   }

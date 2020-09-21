@@ -1,5 +1,6 @@
 package kr.co.rian.apmax.agent.test;
 
+import kr.co.rian.apmax.agent.asm.web.chaser.MockHttpServletChaserTarget;
 import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Scanner;
 
 public class MockServletASM extends HttpServlet {
   
@@ -22,29 +22,38 @@ public class MockServletASM extends HttpServlet {
     System.out.println();
 
     System.out.println("HTTP request by GET method!");
-    final String shouted = shout(123, "hello");
+    final String shouted = shout(123);
     System.out.println(shouted);
+    
+    methodC(true, 'C', (byte) 0x0001, Short.MAX_VALUE, Integer.MAX_VALUE,
+        Float.MIN_VALUE, Long.MAX_VALUE, Double.MIN_VALUE);
 
     System.out.println();
     System.out.println();
   }
   
-  public String shout(int count, Object b) {
-    final String format = "I shout %dth!!! === %s";
-    return String.format(format, count, b.toString());
+  public String shout(int count) {
+    final String format = "I shout %dth!!!";
+    return String.format(format, count);
   }
   
-  public static void main(String[] args) throws ServletException, IOException, InterruptedException {
+  
+  public void methodC(boolean param1, char param2, byte param3, short param4, int param5, float param6, long param7, double param8) {
+    System.out.printf(
+        "%s.methodC(...)%n",
+        MockHttpServletChaserTarget.class.getName()
+    );
+  }
+  
+  public static void main(String[] args) throws ServletException, IOException {
     final MockServletASM mockServletASM = new MockServletASM();
     final MockGetReq request = new MockGetReq(Mockito.mock(HttpServletRequest.class));
     final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-  
-    System.out.println("ServletRequest.service(req, res) start!");
+    
     mockServletASM.service(
         request,
         response
     );
-    System.out.println("ServletRequest.service(req, res) end!");
   }
   
   private static class MockGetReq extends HttpServletRequestWrapper {
