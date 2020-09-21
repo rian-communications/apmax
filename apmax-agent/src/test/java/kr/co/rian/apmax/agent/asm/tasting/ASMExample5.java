@@ -1,4 +1,4 @@
-package asm;
+package kr.co.rian.apmax.agent.asm.tasting;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;

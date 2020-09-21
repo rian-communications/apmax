@@ -1,4 +1,4 @@
-package asm;
+package kr.co.rian.apmax.agent.asm.tasting;
 
 import jdk.nashorn.internal.codegen.types.Type;
 import org.objectweb.asm.ClassWriter;
@@ -8,7 +8,7 @@ import org.objectweb.asm.Opcodes;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ASMExample1 implements Opcodes {
+public class ASMExample2 extends ClassLoader implements Opcodes {
   
   public static byte[] writeClassFile(ClassWriter writer, String name) throws IOException {
     byte[] code = writer.toByteArray();
@@ -20,12 +20,12 @@ public class ASMExample1 implements Opcodes {
     return code;
   }
   
-  public static void main(String[] args) throws IOException {
-    final String className = "example/HelloASM";
+  public static void main(String[] args) throws IOException, IllegalAccessException, InstantiationException {
+    final String className = "HelloASM";
     final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
     
     writer.visit(
-        V1_5,
+        V1_6,
         ACC_PUBLIC,
         className,
         null,
@@ -44,19 +44,38 @@ public class ASMExample1 implements Opcodes {
         "()V",
         false
     );
-    mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintWriter;");
+    mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
     mv.visitLdcInsn("Hello, ASM World!");
     mv.visitMethodInsn(
-        INVOKESTATIC,
-        "java/io/PrintWriter",
+        INVOKEVIRTUAL,
+        "java/io/PrintStream",
         "println",
         "(Ljava/lang/String;)V",
         false
     );
     mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
     mv.visitEnd();
-  
-    writeClassFile(writer, "D:/HelloASM.class");
+    
+    mv = writer.visitMethod(
+        ACC_PUBLIC + ACC_STATIC,
+        "main", "([Ljava/lang/String;)V", null, null
+    );
+    mv.visitCode();
+    mv.visitTypeInsn(NEW, className);
+    mv.visitInsn(DUP);
+    mv.visitMethodInsn(INVOKESPECIAL, className, "<init>", "()V", false);
+    mv.visitVarInsn(ASTORE, 0);
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
+    
+    final byte[] bytes = writeClassFile(writer, "./apmax-agent/target/classes/HelloASM.class");
+    
+    ASMExample2 ex = new ASMExample2();
+    
+    final Class<?> clazz = ex.defineClass(className, bytes, 0, bytes.length);
+    clazz.newInstance();
   }
   
 }
